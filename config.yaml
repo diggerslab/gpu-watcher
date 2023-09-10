@@ -1,6 +1,7 @@
 lab:
   center:
-    ip: 202.204.62.145
+    # ip: 121.48.165.152
+    ip: dig.uestc.cn/gpu
     port: 80
 
 local:

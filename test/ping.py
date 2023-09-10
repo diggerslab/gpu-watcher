@@ -25,6 +25,11 @@ data = {
       },
     }
 }
+import os
+import yaml
 
-res = requests.post('http://localhost:5000/api/ping', json.dumps(data))
+with open(os.path.join(os.path.split(__file__)[0], '../config.yaml')) as f:
+    config = yaml.safe_load(f)
+target = f"http://{config['lab']['center']['ip']}/api/ping"
+res = requests.post(target, json.dumps(data))
 print(res.text, res.status_code)

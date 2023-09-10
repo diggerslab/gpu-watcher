@@ -7,11 +7,11 @@ import yaml
 import pynvml
 
 with open(os.path.join(os.path.split(__file__)[0], 'config.yaml')) as f:
-    config = yaml.load(f)
+    config = yaml.safe_load(f)
 
 pynvml.nvmlInit()
 host = config['local']['host']
-target = 'http://{}:{}/api/ping'.format(config['lab']['center']['ip'], config['lab']['center']['port'])
+target = f"http://{config['lab']['center']['ip']}/api/ping"
 gpu_nums = pynvml.nvmlDeviceGetCount()
 handle_list = [pynvml.nvmlDeviceGetHandleByIndex(i) for i in range(gpu_nums)]
 

@@ -6,7 +6,7 @@ from flask import Flask, request, render_template, send_file
 
 
 with open(os.path.join(os.path.split(__file__)[0], 'config.yaml')) as f:
-    config = yaml.load(f)
+    config = yaml.safe_load(f)
 
 app = Flask(__name__)
 

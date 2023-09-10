@@ -8,12 +8,12 @@ python3
 
 client:
 ```bash
-pip install yaml pynvml
+pip install PyYAML requests pynvml
 ```
 
 server:
 ```bash
-pip install yaml pynvml flask
+pip install PyYAML requests pynvml flask
 ```
 
 ## 使用方式
