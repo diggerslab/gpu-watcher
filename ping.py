@@ -10,10 +10,10 @@ with open(os.path.join(os.path.split(__file__)[0], 'config.yaml')) as f:
     config = yaml.safe_load(f)
 
 pynvml.nvmlInit()
-host = config['local']['host']
 target = f"http://{config['lab']['center']['ip']}/api/ping"
 gpu_nums = pynvml.nvmlDeviceGetCount()
 handle_list = [pynvml.nvmlDeviceGetHandleByIndex(i) for i in range(gpu_nums)]
+gpu_name = pynvml.nvmlDeviceGetName(handle_list[0])
 
 
 def get_host_ip():
@@ -36,14 +36,14 @@ def get_gpu_info():
 
 if __name__ == "__main__":
     body = {
-        'ip': None, 
-        'host': host, 
+        'ip': get_host_ip(), 
         'gpu_nums': gpu_nums,
         'gpu_info': {}, 
         '_date': None}
+    body['host'] = f"Node {body['ip'].split('.')[-1]}: {gpu_nums} * {gpu_name}"
     error_count = 0
     while True:
-        body['ip'] = get_host_ip()
+        # body['ip'] = 
         body['gpu_info'] = get_gpu_info()
         body['_date'] = time.strftime('%Y-%m-%d %H:%M:%S')
         success = False
