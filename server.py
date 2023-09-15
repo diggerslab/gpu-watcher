@@ -16,6 +16,14 @@ act_map = {}
 def index():
     return send_file('templates/index.html')
 
+@app.route('/api/remove', methods=['post'])
+def remove():
+    if request.method == 'POST':
+        host = request.form.get('host', "")
+        if host in act_map:
+            act_map.pop(host)
+            print(f'remove {host}')
+    return str(0)
 
 @app.route('/api/gpu', methods=['GET'])
 def gpu():

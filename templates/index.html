@@ -12,7 +12,7 @@
   <div id="app">
     <el-row>
       <el-col :span="8" v-for="(info, host) of gpu_data">
-        <el-card class="gpu_card">
+        <el-card class="gpu_card" :key="host">
           <div class="gpu_infos">
             <h2>{{ info.host }}</h2>
             <p>{{ info.ip }}</p>
@@ -21,8 +21,8 @@
           <div v-for="(gpu, gpu_index) of info.gpu_info" class="gpu_info">
             <el-progress :percentage="gpu.percentage" status="text">cuda:{{ gpu_index }} - {{ gpu.status }}</el-progress>
           </div>
-          <el-button class="bottom" type="primary" plain href="info.ip">
-            <a :href="'http://' + info.ip + ':8888'">Enter Jupyter</a>
+          <el-button class="bottom" type="primary" plain v-on:click="remove(info.host)">
+          Remove
           </el-button>
         </el-card>
       </el-col>
@@ -87,21 +87,30 @@
 <script>
   new Vue({
     el: '#app',
-    data: {
-      gpu_data: {}
+    data: function(){
+      return {
+        gpu_data: {}
+      }
     },
     methods: {
       getActMap: function () {
         let url = 'api/gpu'
         $.get(url, res => {
           this.gpu_data = Object.assign({}, this.gpu_data, JSON.parse(res))
-        }
-        )
+        })
+      },
+      remove: function (e) {
+        let url = 'api/remove'
+        console.log(e)
+        Vue.delete(this.gpu_data, e)
+        $.post(url, {host: e}, function(res) {
+          // this.$options.methods.getActMap()
+        })
       }
     },
     mounted() {
       this.getActMap()
-      setInterval(this.getActMap, 2000)
+      setInterval(this.getActMap, 10000)
     }
   })
 </script>

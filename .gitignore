@@ -3,3 +3,4 @@ config.yaml
 __pycache__
 log
 *.sock
+*.pid
